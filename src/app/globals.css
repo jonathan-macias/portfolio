@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
+/* The theme script in layout.tsx adds .dark to <html> (system preference or the visitor's choice). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #fbfbfc;
+  --surface: #ffffff;
+  --muted-surface: #f2f4f8;
+  --fg: #0f172a;
+  --muted: #526077;
+  --border: #e3e7ee;
+  --accent: #1f3864;
+  --accent-soft: #e8eef8;
+  --accent-fg: #ffffff;
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg: #0b1120;
+  --surface: #111a2e;
+  --muted-surface: #16213a;
+  --fg: #e6ebf5;
+  --muted: #94a3bd;
+  --border: #22304d;
+  --accent: #7fb3ff;
+  --accent-soft: #15284a;
+  --accent-fg: #0b1120;
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-muted-surface: var(--muted-surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
 }
