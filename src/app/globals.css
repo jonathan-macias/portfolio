@@ -4,56 +4,153 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #fbfbfc;
-  --surface: #ffffff;
-  --muted-surface: #f2f4f8;
-  --fg: #0f172a;
-  --muted: #526077;
-  --border: #e3e7ee;
-  --accent: #1f3864;
-  --accent-soft: #e8eef8;
+  --bg: #ecede8;
+  --surface: #f6f6f2;
+  --fg: #16181a;
+  --muted: #565b5c;
+  --border: #c9ccc4;
+  --accent: #b8320a;
   --accent-fg: #ffffff;
+  /* 3.4:1 on --bg: wires, ports and numerals 24px and up only. Small text uses --accent. */
+  --signal: #e8430e;
   color-scheme: light;
 }
 
 :root.dark {
-  --bg: #0b1120;
-  --surface: #111a2e;
-  --muted-surface: #16213a;
-  --fg: #e6ebf5;
-  --muted: #94a3bd;
-  --border: #22304d;
-  --accent: #7fb3ff;
-  --accent-soft: #15284a;
-  --accent-fg: #0b1120;
+  --bg: #121312;
+  --surface: #1a1b1a;
+  --fg: #e9e8e1;
+  --muted: #a0a39c;
+  --border: #343733;
+  --accent: #ff7240;
+  --accent-fg: #121312;
+  --signal: #ff7240;
   color-scheme: dark;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
-  --color-muted-surface: var(--muted-surface);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
   --color-accent-fg: var(--accent-fg);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-signal: var(--signal);
+
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo);
+  --font-display--font-variation-settings: "wdth" 75;
+  --font-mono: var(--font-martian-mono);
+  --font-mono--font-variation-settings: "wdth" 87.5;
+
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: 0.06em;
+  --text-readout: clamp(2.5rem, 2rem + 2vw, 3.75rem);
+  --text-readout--line-height: 1;
+  --text-display: clamp(3rem, 14vw, 6.5rem);
+  /* Below 0.96 the acute on the Í in "Macías" collides with the line above. */
+  --text-display--line-height: 0.96;
+  --text-display--letter-spacing: -0.015em;
+
+  --container-sheet: 85rem;
+
+  /* Square corners are the shape language; only rounded-full stays available. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+
+  --ease-spec: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-signal: signal 4s linear infinite;
+
+  @keyframes signal {
+    from {
+      stroke-dashoffset: 16;
+    }
+    to {
+      stroke-dashoffset: -240;
+    }
+  }
 }
 
+@utility bg-drafting {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* Full-strength rule on an element's top edge. It is static unless scroll-driven animation is available. */
+@utility rule-top {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: var(--fg);
+    transform-origin: left;
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rule-top::before {
+      animation: rule-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+/* Clears the sticky header, which has a second row (section nav) below md. */
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 7rem;
+}
+
+@media (width >= 48rem) {
+  html {
+    scroll-padding-top: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
+  font-size: 1.0625rem;
+  line-height: 1.6;
 }
 
 ::selection {
   background: var(--accent);
   color: var(--accent-fg);
+}
+
+/* Two-tone ring: one of the two colors always contrasts, including on accent fills. */
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--bg);
 }

@@ -19,6 +19,15 @@ All text lives in [`src/data/profile.ts`](src/data/profile.ts): profile, about, 
 
 To update the resume, replace `public/Jonathan_Macias_Resume.pdf` (keep the same file name).
 
+## Design system
+
+The visual direction is "Spec Sheet": the site is art-directed like an engineering datasheet. Design tokens live in [`src/app/globals.css`](src/app/globals.css).
+
+- **Type:** Archivo for text and condensed display, Martian Mono for labels and metadata.
+- **Color:** stone, ink and one orange. `--signal` is 3.4:1 on the background, so it is for wires, ports and numerals 24px and up. Small orange text uses `--accent`.
+- **Shape:** square corners and hairline rules instead of cards.
+- **Motion:** CSS only, and off under `prefers-reduced-motion`.
+
 ## Project structure
 
 ```
@@ -26,7 +35,7 @@ src/
   app/
     layout.tsx       # metadata, fonts, theme script
     page.tsx         # all sections
-    globals.css      # color tokens (light/dark)
+    globals.css      # design tokens (light/dark), motion
     icon.svg         # favicon
   components/
     FlowDiagram.tsx  # architecture diagram for projects

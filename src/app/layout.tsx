@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Martian_Mono } from "next/font/google";
 import Script from "next/script";
 import { profile } from "@/data/profile";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const martianMono = Martian_Mono({
+  variable: "--font-martian-mono",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
 const title = `${profile.name} — ${profile.title} (${profile.focus})`;
@@ -35,12 +37,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${martianMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <a
+          href="#top"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-50 focus:bg-fg focus:px-4 focus:py-2 focus:font-mono focus:text-label focus:uppercase focus:text-bg"
+        >
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
